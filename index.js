@@ -12,11 +12,12 @@ const app = express();
 dotEnv.config();
 const PORT = process.env.PORT || 4000;
 
-// ✅ CORS Configuration
 app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true
+  origin: [
+    'http://localhost:5173',
+    'https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app'
+  ],
+  credentials: true // if you're using cookies or auth headers
 }));
 app.options('*', cors()); // Preflight
 

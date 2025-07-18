@@ -6,29 +6,38 @@ const bodyParser = require('body-parser');
 const firmRoutes = require('./routes/firmRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cors = require('cors');
-const path = require('path')
+const path = require('path');
 
-const app = express()
-
+const app = express();
+dotEnv.config();
 const PORT = process.env.PORT || 4000;
 
-dotEnv.config();
-app.use(cors())
+// ✅ CORS Configuration
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true
+}));
+app.options('*', cors()); // Preflight
 
+// ✅ DB Connection
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log("MongoDB connected successfully!"))
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error));
 
+// ✅ Middleware
 app.use(bodyParser.json());
 app.use('/vendor', vendorRoutes);
-app.use('/firm', firmRoutes)
+app.use('/firm', firmRoutes);
 app.use('/product', productRoutes);
 app.use('/uploads', express.static('uploads'));
 
-app.listen(PORT, () => {
-    console.log(`server started and running at ${PORT}`);
+// ✅ Default Route
+app.get('/', (req, res) => {
+    res.send("<h1>Welcome to Swiggy</h1>");
 });
 
-app.use('/', (req, res) => {
-    res.send("<h1> Welcome to Swiggy");
-})
+// ✅ Start Server
+app.listen(PORT, () => {
+    console.log(`Server started and running at ${PORT}`);
+});

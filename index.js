@@ -10,7 +10,6 @@ const vendorRoutes = require("./routes/vendorRoutes");
 const firmRoutes = require("./routes/firmRoutes");
 const productRoutes = require("./routes/productRoutes");
 
-// Initialize app and environment
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -20,7 +19,9 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app",
   "https://swiggy-user-react-bstl4wtov-sai-koushiks-projects-c8fc2e28.vercel.app",
-  "https://swiggy-user-react-nq9m321gl-sai-koushiks-projects-c8fc2e28.vercel.app"
+  "https://swiggy-user-react-nq9m321gl-sai-koushiks-projects-c8fc2e28.vercel.app",
+  // 🔥 ADD YOUR ACTUAL FRONTEND DOMAIN:
+  "https://swiggy-user-react-7clybihsk-sai-koushiks-projects-c8fc2e28.vercel.app"
 ];
 
 app.use(cors({
@@ -57,7 +58,7 @@ app.get("/", (req, res) => {
 // Global error handling middleware (optional, for robust error responses)
 app.use((err, req, res, next) => {
   // Handle CORS errors
-  if (err instanceof Error && err.message.startsWith("CORS")) {
+  if (err instanceof Error && err.message.includes("CORS")) {
     return res.status(403).json({ message: err.message });
   }
   // Other server errors

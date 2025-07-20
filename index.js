@@ -18,10 +18,7 @@ const PORT = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app",
-  "https://swiggy-user-react-bstl4wtov-sai-koushiks-projects-c8fc2e28.vercel.app",
-  "https://swiggy-user-react-nq9m321gl-sai-koushiks-projects-c8fc2e28.vercel.app",
-  // 🔥 ADD YOUR ACTUAL FRONTEND DOMAIN:
-  "https://swiggy-user-react-7clybihsk-sai-koushiks-projects-c8fc2e28.vercel.app"
+  "https://swiggy-user-react-2ic314sfy-sai-koushiks-projects-c8fc2e28.vercel.app" // ✅ NEW ONE
 ];
 
 app.use(cors({

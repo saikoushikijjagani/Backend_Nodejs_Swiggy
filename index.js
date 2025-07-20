@@ -1,51 +1,78 @@
 const express = require("express");
-const dotEnv = require("dotenv");
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const vendorRoutes = require("./routes/vendorRoutes");
-const firmRoutes = require("./routes/firmRoutes");
-const productRoutes = require("./routes/productRoutes");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 
+// Import routes
+const vendorRoutes = require("./routes/vendorRoutes");
+const firmRoutes = require("./routes/firmRoutes");
+const productRoutes = require("./routes/productRoutes");
+
+// Initialize app and environment
+dotenv.config();
 const app = express();
-dotEnv.config();
 const PORT = process.env.PORT || 4000;
 
-// ✅ Proper CORS setup
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app",
-    "https://swiggy-user-react-bstl4wtov-sai-koushiks-projects-c8fc2e28.vercel.app",
-    "https://swiggy-user-react-nq9m321gl-sai-koushiks-projects-c8fc2e28.vercel.app"
-  ],
-  credentials: true,
-}));
-app.options('*', cors());
+// CORS configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app",
+  "https://swiggy-user-react-bstl4wtov-sai-koushiks-projects-c8fc2e28.vercel.app",
+  "https://swiggy-user-react-nq9m321gl-sai-koushiks-projects-c8fc2e28.vercel.app"
+];
 
-// ✅ Middleware
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin, like mobile apps or curl
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = "CORS policy: This origin is not allowed.";
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
+
+app.options('*', cors()); // Pre-flight for all routes
+
+// Middleware
 app.use(bodyParser.json());
 
-// ✅ Static file serving
+// Serve static files (e.g., uploaded images)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ API routes
+// Routes
 app.use("/vendor", vendorRoutes);
 app.use("/firm", firmRoutes);
 app.use("/product", productRoutes);
 
-// ✅ Test Route
+// API health/test route
 app.get("/", (req, res) => {
   res.send("<h1>Welcome to Swiggy</h1>");
 });
 
-// ✅ DB connection
-mongoose.connect(process.env.MONGO_URL)
-  .then(() => console.log("MongoDB connected successfully!"))
-  .catch((err) => console.log(err));
+// Global error handling middleware (optional, for robust error responses)
+app.use((err, req, res, next) => {
+  // Handle CORS errors
+  if (err instanceof Error && err.message.startsWith("CORS")) {
+    return res.status(403).json({ message: err.message });
+  }
+  // Other server errors
+  res.status(err.status || 500).json({ message: err.message || "Server Error" });
+});
 
-// ✅ Start server
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("✅ MongoDB connected successfully!"))
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err.message);
+    process.exit(1);
+  });
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`🚀 Server started on port ${PORT}`);
 });

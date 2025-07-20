@@ -17,10 +17,12 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app',
-    'https://swiggy-user-react-bstl4wtov-sai-koushiks-projects-c8fc2e28.vercel.app'  // ✅ Newly added frontend
+    'https://swiggy-user-react-bstl4wtov-sai-koushiks-projects-c8fc2e28.vercel.app',
+    'https://swiggy-user-react-ntobk25nf-sai-koushiks-projects-c8fc2e28.vercel.app'  // ✅ Newly deployed Vercel frontend
   ],
   credentials: true
 }));
+
 app.options('*', cors()); // Enable preflight requests for all routes
 
 // ✅ DB Connection

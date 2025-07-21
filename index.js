@@ -18,8 +18,8 @@ const PORT = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://react-swiggy-backend-dashboard-6plsmdrbs.vercel.app",
-  "https://swiggy-user-react-2ic314sfy-sai-koushiks-projects-c8fc2e28.vercel.app" 
-  "https://swiggy-user-react-5cx85k8lk-sai-koushiks-projects-c8fc2e28.vercel.app/"
+  "https://swiggy-user-react-2ic314sfy-sai-koushiks-projects-c8fc2e28.vercel.app",
+  "https://swiggy-user-react-5cx85k8lk-sai-koushiks-projects-c8fc2e28.vercel.app"
 ];
 
 app.use(cors({

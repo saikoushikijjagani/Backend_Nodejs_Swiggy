@@ -18,7 +18,7 @@ const vendorSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Firm'
     }]
-});
+}, { timestamps: true }); // Adds createdAt and updatedAt
 
 const Vendor = mongoose.model('Vendor', vendorSchema);
 
